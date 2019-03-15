@@ -1,2 +1,0 @@
-/usr/bin/ar qc libOptions.a  CMakeFiles/Options.dir/Basket.cpp.o CMakeFiles/Options.dir/Asian.cpp.o CMakeFiles/Options.dir/Performance.cpp.o
-/usr/bin/ranlib libOptions.a

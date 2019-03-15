@@ -1,2 +1,0 @@
-/usr/bin/ar qc libPricer.a  CMakeFiles/Pricer.dir/BlackScholesModel.cpp.o CMakeFiles/Pricer.dir/MonteCarlo.cpp.o CMakeFiles/Pricer.dir/HedgePortfolio.cpp.o CMakeFiles/Pricer.dir/FakeRnd.cpp.o CMakeFiles/Pricer.dir/PnlRand.cpp.o
-/usr/bin/ranlib libPricer.a
