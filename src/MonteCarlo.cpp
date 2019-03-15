@@ -186,6 +186,7 @@ void MonteCarlo::price(double &prix, int &nbSamples, double ic, int numprocs, in
       ksiCarreM = exp(-2*mod_->r_*opt_->T_)*(moyennePayoffCarre-moyennePayoff*moyennePayoff);
       icCurrent = 1.96*sqrt(ksiCarreM/nbSamples)*2;
       prix = exp(-mod_->r_*opt_->T_)*moyennePayoff;
+	  cout < numprocs << endl;
 
       for(proc = 1; proc < numprocs; ++proc){
         MPI_Send(&icCurrent, 1, MPI_DOUBLE, proc, 3, MPI_COMM_WORLD);
@@ -199,9 +200,9 @@ void MonteCarlo::price(double &prix, int &nbSamples, double ic, int numprocs, in
         MPI_Recv(&icCurrent, 1, MPI_DOUBLE, 0, 3, MPI_COMM_WORLD, &status);
       }
 	  
-	if (numprocs > 1) {
-		MPI_Barrier(MPI_COMM_WORLD);
-	}
+
+	MPI_Barrier(MPI_COMM_WORLD);
+	
     
   } while (icCurrent > ic) ;
 
