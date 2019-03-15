@@ -198,8 +198,11 @@ void MonteCarlo::price(double &prix, int &nbSamples, double ic, int numprocs, in
         priceSlave(1, pathCourant, rngRand, master, tagCarre, tag);
         MPI_Recv(&icCurrent, 1, MPI_DOUBLE, 0, 3, MPI_COMM_WORLD, &status);
       }
-
-    MPI_Barrier(MPI_COMM_WORLD);
+	  
+	if (numprocs > 1) {
+		MPI_Barrier(MPI_COMM_WORLD);
+	}
+    
   } while (icCurrent > ic) ;
 
   pnl_mat_free(&pathCourant);
