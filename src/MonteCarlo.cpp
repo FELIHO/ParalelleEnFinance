@@ -175,8 +175,14 @@ void MonteCarlo::price(double &prix, int &nbSamples, double ic, int numprocs, in
 
   /* Thread master */
   if (myid == 0) {
-      priceMaster(1, numprocs, sommePayoff, sommePayoffCarre, pathCourant, rngRand, proc, tagCarre, tag, status);
-      nbSamples += numprocs;
+	  if (numprocs != 1) {
+		  priceMaster(1, numprocs, sommePayoff, sommePayoffCarre, pathCourant, rngRand, proc, tagCarre, tag, status);
+		  nbSamples += numprocs;
+	  } else {
+		  priceMaster(2, numprocs, sommePayoff, sommePayoffCarre, pathCourant, rngRand, proc, tagCarre, tag, status);
+		  nbSamples += 2;
+	  }
+      
       /* Compute endpoint data */
 
       moyennePayoff = sommePayoff/nbSamples;
@@ -186,7 +192,6 @@ void MonteCarlo::price(double &prix, int &nbSamples, double ic, int numprocs, in
       ksiCarreM = exp(-2*mod_->r_*opt_->T_)*(moyennePayoffCarre-moyennePayoff*moyennePayoff);
       icCurrent = 1.96*sqrt(ksiCarreM/nbSamples)*2;
       prix = exp(-mod_->r_*opt_->T_)*moyennePayoff;
-	  cout << icCurrent << endl;
 
       for(proc = 1; proc < numprocs; ++proc){
         MPI_Send(&icCurrent, 1, MPI_DOUBLE, proc, 3, MPI_COMM_WORLD);
@@ -203,7 +208,6 @@ void MonteCarlo::price(double &prix, int &nbSamples, double ic, int numprocs, in
 
 	MPI_Barrier(MPI_COMM_WORLD);
 	
-    cout << icCurrent << endl;
   } while (icCurrent > ic) ;
 
   pnl_mat_free(&pathCourant);
